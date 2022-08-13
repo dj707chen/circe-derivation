@@ -1,6 +1,6 @@
 package io.circe.examples
 
-import cats.kernel.Eq
+import cats.Eq
 import org.scalacheck.Arbitrary
 
 case class WithDefaults(i: Int, j: Int = 1, k: List[String] = List(""))

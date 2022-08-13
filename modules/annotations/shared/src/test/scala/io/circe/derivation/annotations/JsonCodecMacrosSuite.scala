@@ -1,7 +1,7 @@
 package io.circe.derivation.annotations
 
 import cats.instances.AllInstances
-import cats.kernel.Eq
+import cats.Eq
 import io.circe.{ Decoder, Encoder }
 import io.circe.derivation.CirceSuite
 import io.circe.testing.{ ArbitraryInstances, CodecTests }
@@ -78,8 +78,8 @@ package jsoncodecmacrossuiteaux {
 
   @JsonCodec
   sealed trait Hierarchy
-  @JsonCodec final case class Hierarchy1(i: Int, s: String) extends Hierarchy
-  @JsonCodec final case class Hierarchy2(xs: List[String]) extends Hierarchy
+  @JsonCodec final case class Hierarchy1(i: Int, s: String)    extends Hierarchy
+  @JsonCodec final case class Hierarchy2(xs: List[String])     extends Hierarchy
   @JsonCodec final case class Hierarchy3(s: Single, d: Double) extends Hierarchy
 
   object Hierarchy {
@@ -162,7 +162,7 @@ class JsonCodecMacrosSuite extends CirceSuite {
     @JsonCodec(config = Configuration.default)
     case class CaseClass(fooCamel: String, barCamel: Int)
 
-    val expectedJson = """{"fooCamel":"foo","barCamel":1}"""
+    val expectedJson  = """{"fooCamel":"foo","barCamel":1}"""
     val generatedJson = Encoder[CaseClass].apply(CaseClass("foo", 1)).noSpaces
 
     assertEq(expectedJson, generatedJson)
@@ -173,7 +173,7 @@ class JsonCodecMacrosSuite extends CirceSuite {
     case class CaseClass(fooSnake: String, barSnake: Int)
 
     val generatedJson = Encoder[CaseClass].apply(CaseClass("foo", 1)).noSpaces
-    val expectedJson = """{"foo_snake":"foo","bar_snake":1}"""
+    val expectedJson  = """{"foo_snake":"foo","bar_snake":1}"""
 
     assertEq(expectedJson, generatedJson)
   }
@@ -183,7 +183,7 @@ class JsonCodecMacrosSuite extends CirceSuite {
     case class CaseClass(fooKebab: String, barKebab: Int)
 
     val generatedJson = Encoder[CaseClass].apply(CaseClass("foo", 1)).noSpaces
-    val expectedJson = """{"foo-kebab":"foo","bar-kebab":1}"""
+    val expectedJson  = """{"foo-kebab":"foo","bar-kebab":1}"""
 
     assertEq(expectedJson, generatedJson)
   }
@@ -208,7 +208,7 @@ class JsonCodecMacrosSuite extends CirceSuite {
     @SnakeCaseJsonCodec case class CaseClass(fooSnake: String, barSnake: Int)
 
     val generatedJson = Encoder[CaseClass].apply(CaseClass("foo", 1)).noSpaces
-    val expectedJson = """{"foo_snake":"foo","bar_snake":1}"""
+    val expectedJson  = """{"foo_snake":"foo","bar_snake":1}"""
 
     assertEq(expectedJson, generatedJson)
   }
@@ -217,7 +217,7 @@ class JsonCodecMacrosSuite extends CirceSuite {
     @KebabCaseJsonCodec case class CaseClass(fooKebab: String, barKebab: Int)
 
     val generatedJson = Encoder[CaseClass].apply(CaseClass("foo", 1)).noSpaces
-    val expectedJson = """{"foo-kebab":"foo","bar-kebab":1}"""
+    val expectedJson  = """{"foo-kebab":"foo","bar-kebab":1}"""
 
     assertEq(expectedJson, generatedJson)
   }

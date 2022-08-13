@@ -8,19 +8,19 @@ import io.circe.examples._
 import io.circe.testing.CodecTests
 
 object TransformMemberNamesWithDefaultsSuiteCodecs extends Serializable {
-  implicit val decodeFoo: Decoder[Foo] = deriveDecoder(renaming.snakeCase)
+  implicit val decodeFoo: Decoder[Foo]          = deriveDecoder(renaming.snakeCase)
   implicit val encodeFoo: Encoder.AsObject[Foo] = deriveEncoder(renaming.snakeCase)
-  val codecForFoo: Codec.AsObject[Foo] = deriveCodec(renaming.snakeCase)
+  val codecForFoo: Codec.AsObject[Foo]          = deriveCodec(renaming.snakeCase)
 
-  implicit val decodeBar: Decoder[Bar] = deriveDecoder(renaming.snakeCase)
+  implicit val decodeBar: Decoder[Bar]          = deriveDecoder(renaming.snakeCase)
   implicit val encodeBar: Encoder.AsObject[Bar] = deriveEncoder(renaming.snakeCase)
-  val codecForBar: Codec.AsObject[Bar] = deriveCodec(renaming.snakeCase)
+  val codecForBar: Codec.AsObject[Bar]          = deriveCodec(renaming.snakeCase)
 
-  implicit val decodeBaz: Decoder[Baz] = deriveDecoder(renaming.snakeCase)
+  implicit val decodeBaz: Decoder[Baz]          = deriveDecoder(renaming.snakeCase)
   implicit val encodeBaz: Encoder.AsObject[Baz] = deriveEncoder(renaming.snakeCase)
-  val codecForBaz: Codec.AsObject[Baz] = deriveCodec(renaming.snakeCase)
+  val codecForBaz: Codec.AsObject[Baz]          = deriveCodec(renaming.snakeCase)
 
-  implicit def decodeQux[A: Decoder]: Decoder[Qux[A]] =
+  implicit def decodeQux[A: Decoder]: Decoder[Qux[A]]          =
     deriveDecoder(renaming.replaceWith("aa" -> "1", "bb" -> "2"))
   implicit def encodeQux[A: Encoder]: Encoder.AsObject[Qux[A]] =
     deriveEncoder(renaming.replaceWith("aa" -> "1", "bb" -> "2"))
@@ -30,7 +30,7 @@ object TransformMemberNamesWithDefaultsSuiteCodecs extends Serializable {
 
   implicit val decodeWithDefaults: Decoder[WithDefaults] = deriveDecoder(identity)
   implicit val encodeWithDefaults: Encoder[WithDefaults] = deriveEncoder(identity)
-  val codecForWithDefaults: Codec[WithDefaults] = deriveCodec(identity)
+  val codecForWithDefaults: Codec[WithDefaults]          = deriveCodec(identity)
 
 }
 
@@ -92,7 +92,7 @@ class TransformMemberNamesWithDefaultsSuite extends CirceSuite {
 
   "deriveEncoder" should "respect default behaviour" in {
     val expectedBothDefaults = WithDefaults(0, 1, List(""))
-    val expectedOneDefault = WithDefaults(0, 1, Nil)
+    val expectedOneDefault   = WithDefaults(0, 1, Nil)
 
     val j1 = Json.obj("i" := 0)
     val j2 = Json.obj("i" := 0, "k" := List.empty[String])

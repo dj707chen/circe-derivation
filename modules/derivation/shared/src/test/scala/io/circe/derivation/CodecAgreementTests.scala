@@ -1,5 +1,5 @@
 package io.circe.derivation
-import cats.kernel.Eq
+import cats.Eq
 import cats.laws._
 import cats.laws.discipline._
 import io.circe.{ Decoder, Encoder, Json }
@@ -48,7 +48,7 @@ trait CodecAgreementTests[A] extends Laws {
   ): RuleSet = new DefaultRuleSet(
     name = "codec-agreement",
     parent = None,
-    "agreement" -> Prop.forAll((a: A) => laws.codecsAgree(a)),
+    "agreement"       -> Prop.forAll((a: A) => laws.codecsAgree(a)),
     "new decodes old" -> Prop.forAll((a: A) => laws.newDecodesOld(a)),
     "old decodes new" -> Prop.forAll((a: A) => laws.oldDecodesNew(a))
   )

@@ -1,6 +1,6 @@
 package io.circe.examples
 
-import cats.kernel.Eq
+import cats.Eq
 import org.scalacheck.Arbitrary
 
 case class Qux[A](i: Int, a: A, s: String)
@@ -14,7 +14,7 @@ object Qux {
     } yield Qux(i, a, s)
   )
 
-  implicit def eqQux[A](implicit eqA: Eq[A]): Eq[Qux[A]] = Eq.instance {
-    case (Qux(i1, a1, s1), Qux(i2, a2, s2)) => i1 == i2 && eqA.eqv(a1, a2) && s1 == s2
+  implicit def eqQux[A](implicit eqA: Eq[A]): Eq[Qux[A]] = Eq.instance { case (Qux(i1, a1, s1), Qux(i2, a2, s2)) =>
+    i1 == i2 && eqA.eqv(a1, a2) && s1 == s2
   }
 }

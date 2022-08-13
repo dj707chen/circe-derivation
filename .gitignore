@@ -7,7 +7,10 @@ target/
 .cache
 .settings
 .project
+project/project
 .classpath
 tmp/
 .bloop
 .metals
+.vscode
+metals.sbt

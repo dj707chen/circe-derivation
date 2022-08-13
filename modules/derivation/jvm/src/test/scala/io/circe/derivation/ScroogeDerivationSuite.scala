@@ -5,13 +5,13 @@ import io.circe.examples.scrooge._
 import io.circe.testing.CodecTests
 
 object ScroogeDerivationSuiteCodecs extends Serializable {
-  implicit val decodeSomethingStruct: Decoder[SomethingStruct] = deriveDecoder
+  implicit val decodeSomethingStruct: Decoder[SomethingStruct]          = deriveDecoder
   implicit val encodeSomethingStruct: Encoder.AsObject[SomethingStruct] = deriveEncoder
-  val codecForSomethingStruct: Codec.AsObject[SomethingStruct] = deriveCodec
+  val codecForSomethingStruct: Codec.AsObject[SomethingStruct]          = deriveCodec
 
-  implicit val decodeBiggerStruct: Decoder[BiggerStruct] = deriveDecoder
+  implicit val decodeBiggerStruct: Decoder[BiggerStruct]          = deriveDecoder
   implicit val encodeBiggerStruct: Encoder.AsObject[BiggerStruct] = deriveEncoder
-  val codecForBiggerStruct: Codec.AsObject[BiggerStruct] = deriveCodec
+  val codecForBiggerStruct: Codec.AsObject[BiggerStruct]          = deriveCodec
 }
 
 class ScroogeDerivationSuite extends CirceSuite {

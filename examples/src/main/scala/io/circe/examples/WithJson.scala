@@ -1,6 +1,6 @@
 package io.circe.examples
 
-import cats.kernel.Eq
+import cats.Eq
 import io.circe.Json
 import io.circe.testing.instances._
 import org.scalacheck.Arbitrary

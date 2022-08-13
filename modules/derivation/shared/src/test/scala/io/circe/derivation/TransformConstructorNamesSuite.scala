@@ -7,42 +7,42 @@ import io.circe.testing.CodecTests
 
 object TransformConstructorNamesSuite extends Serializable {
 
-  implicit val decodeAdtBar: Decoder[AdtBar] = deriveDecoder
+  implicit val decodeAdtBar: Decoder[AdtBar]          = deriveDecoder
   implicit val encodeAdtBar: Encoder.AsObject[AdtBar] = deriveEncoder
 
-  implicit val decodeAdtFoo: Decoder[AdtFoo] = deriveDecoder
+  implicit val decodeAdtFoo: Decoder[AdtFoo]          = deriveDecoder
   implicit val encodeAdtFoo: Encoder.AsObject[AdtFoo] = deriveEncoder
 
-  implicit val decodeAdtQux: Decoder[AdtQux.type] = deriveDecoder
+  implicit val decodeAdtQux: Decoder[AdtQux.type]          = deriveDecoder
   implicit val encodeAdtQux: Encoder.AsObject[AdtQux.type] = deriveEncoder
 
-  implicit val decodeAdt: Decoder[Adt] = deriveDecoder(renaming.snakeCase, true, None)
+  implicit val decodeAdt: Decoder[Adt]          = deriveDecoder(renaming.snakeCase, true, None)
   implicit val encodeAdt: Encoder.AsObject[Adt] = deriveEncoder(renaming.snakeCase, None)
-  val codecForAdt: Codec[Adt] = deriveCodec(renaming.snakeCase, true, None)
+  val codecForAdt: Codec[Adt]                   = deriveCodec(renaming.snakeCase, true, None)
 
-  implicit val decodeNestedAdtBar: Decoder[NestedAdtBar] = deriveDecoder
+  implicit val decodeNestedAdtBar: Decoder[NestedAdtBar]          = deriveDecoder
   implicit val encodeNestedAdtBar: Encoder.AsObject[NestedAdtBar] = deriveEncoder
 
-  implicit val decodeNestedAdtFoo: Decoder[NestedAdtFoo] = deriveDecoder
+  implicit val decodeNestedAdtFoo: Decoder[NestedAdtFoo]          = deriveDecoder
   implicit val encodeNestedAdtFoo: Encoder.AsObject[NestedAdtFoo] = deriveEncoder
 
-  implicit val decodeNestedAdtQux: Decoder[NestedAdtQux.type] = deriveDecoder
+  implicit val decodeNestedAdtQux: Decoder[NestedAdtQux.type]          = deriveDecoder
   implicit val encodeNestedAdtQux: Encoder.AsObject[NestedAdtQux.type] = deriveEncoder
 
-  implicit val decodeNestedAdt: Decoder[NestedAdt] = deriveDecoder(renaming.snakeCase, true, None)
+  implicit val decodeNestedAdt: Decoder[NestedAdt]          = deriveDecoder(renaming.snakeCase, true, None)
   implicit val encodeNestedAdt: Encoder.AsObject[NestedAdt] = deriveEncoder(renaming.snakeCase, None)
-  val codecForNestedAdt: Codec[NestedAdt] = deriveCodec(renaming.snakeCase, true, None)
+  val codecForNestedAdt: Codec[NestedAdt]                   = deriveCodec(renaming.snakeCase, true, None)
 
   object discriminator {
     val typeField = Some("_type")
 
-    implicit val decodeAdt: Decoder[Adt] = deriveDecoder(renaming.snakeCase, true, typeField)
+    implicit val decodeAdt: Decoder[Adt]          = deriveDecoder(renaming.snakeCase, true, typeField)
     implicit val encodeAdt: Encoder.AsObject[Adt] = deriveEncoder(renaming.snakeCase, typeField)
-    val codecForAdt: Codec[Adt] = deriveCodec(renaming.snakeCase, true, typeField)
+    val codecForAdt: Codec[Adt]                   = deriveCodec(renaming.snakeCase, true, typeField)
 
-    implicit val decodeNestedAdt: Decoder[NestedAdt] = deriveDecoder(renaming.snakeCase, true, typeField)
+    implicit val decodeNestedAdt: Decoder[NestedAdt]          = deriveDecoder(renaming.snakeCase, true, typeField)
     implicit val encodeNestedAdt: Encoder.AsObject[NestedAdt] = deriveEncoder(renaming.snakeCase, typeField)
-    val codecForNestedAdt: Codec[NestedAdt] = deriveCodec(renaming.snakeCase, true, typeField)
+    val codecForNestedAdt: Codec[NestedAdt]                   = deriveCodec(renaming.snakeCase, true, typeField)
   }
 }
 

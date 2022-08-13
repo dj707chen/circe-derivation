@@ -29,7 +29,7 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
     clsDef.mods.hasFlag(Flag.CASE) || isSealed(clsDef)
 
   private[this] final def constructJsonCodec(annottees: Tree*): Tree = annottees match {
-    case List(clsDef: ClassDef) if isCaseClassOrSealed(clsDef) =>
+    case List(clsDef: ClassDef) if isCaseClassOrSealed(clsDef)                                                   =>
       q"""
        $clsDef
        object ${clsDef.name.toTermName} {
@@ -37,9 +37,9 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
        }
        """
     case List(
-      clsDef: ClassDef,
-      q"object $objName extends { ..$objEarlyDefs } with ..$objParents { $objSelf => ..$objDefs }"
-    ) if isCaseClassOrSealed(clsDef) =>
+          clsDef: ClassDef,
+          q"object $objName extends { ..$objEarlyDefs } with ..$objParents { $objSelf => ..$objDefs }"
+        ) if isCaseClassOrSealed(clsDef) =>
       q"""
        $clsDef
        object $objName extends { ..$objEarlyDefs } with ..$objParents { $objSelf =>
@@ -54,15 +54,15 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
        ${caseObjectCodec(objName)}
       }
       """
-    case _ => c.abort(c.enclosingPosition, "Invalid annotation target: must be a case class or a sealed trait/class")
+    case _                                                                                                       => c.abort(c.enclosingPosition, "Invalid annotation target: must be a case class or a sealed trait/class")
   }
 
   private[this] def caseObjectCodec(objName: TermName) = {
-    val decoderName = TermName("decode" + objName)
-    val encoderName = TermName("encode" + objName)
-    val codecName = TermName("codecFor" + objName)
-    val transformNames = cfgTransformConstructorNames
-    val Type = tq"$objName.type"
+    val decoderName               = TermName("decode" + objName)
+    val encoderName               = TermName("encode" + objName)
+    val codecName                 = TermName("codecFor" + objName)
+    val transformNames            = cfgTransformConstructorNames
+    val Type                      = tq"$objName.type"
     val (decoder, encoder, codec) = (
       q"""implicit val $decoderName: $DecoderClass[$Type] =
             _root_.io.circe.derivation.deriveDecoder[$Type]($transformNames, $cfgUseDefaults, $cfgDiscriminator)""",
@@ -80,10 +80,10 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
     }
   }
 
-  private[this] val DecoderClass = typeOf[Decoder[_]].typeSymbol.asType
-  private[this] val EncoderClass = typeOf[Encoder[_]].typeSymbol.asType
+  private[this] val DecoderClass         = typeOf[Decoder[_]].typeSymbol.asType
+  private[this] val EncoderClass         = typeOf[Encoder[_]].typeSymbol.asType
   private[this] val AsObjectEncoderClass = typeOf[Encoder.AsObject[_]].typeSymbol.asType
-  private[this] val AsObjectCodecClass = typeOf[Codec.AsObject[_]].typeSymbol.asType
+  private[this] val AsObjectCodecClass   = typeOf[Codec.AsObject[_]].typeSymbol.asType
 
   private[this] val macroName: Tree = {
     c.prefix.tree match {
@@ -107,7 +107,7 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
     macroName match {
       case Ident(TypeName("SnakeCaseJsonCodec")) => (JsonCodecType.SnakeCaseJsonCodec, snakeCaseMemberNamesCfg)
       case Ident(TypeName("KebabCaseJsonCodec")) => (JsonCodecType.KebabCaseJsonCodec, kebabCaseMemberNamesCfg)
-      case _ =>
+      case _                                     =>
         c.prefix.tree match {
           case q"new ${`macroName`}()"              => (JsonCodecType.Both, defaultCfg)
           case q"new ${`macroName`}(config = $cfg)" => (codecFrom(c.typecheck(cfg)), cfg)
@@ -119,13 +119,13 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
 
   private[this] def codecFrom(tree: Tree): JsonCodecType =
     tree.tpe.dealias match {
-      case t if t <:< typeOf[Configuration.Codec] =>
+      case t if t <:< typeOf[Configuration.Codec]      =>
         JsonCodecType.Both
       case t if t <:< typeOf[Configuration.DecodeOnly] =>
         JsonCodecType.DecodeOnly
       case t if t <:< typeOf[Configuration.EncodeOnly] =>
         JsonCodecType.EncodeOnly
-      case t =>
+      case t                                           =>
         c.warning(
           c.enclosingPosition,
           "Couldn't determine type of configuration; will produce both encoder and decoder"
@@ -133,22 +133,22 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
         JsonCodecType.Both
     }
 
-  private[this] val cfgTransformMemberNames =
+  private[this] val cfgTransformMemberNames      =
     q"$config.transformMemberNames"
   private[this] val cfgTransformConstructorNames =
     q"$config.transformConstructorNames"
-  private[this] val cfgUseDefaults =
+  private[this] val cfgUseDefaults               =
     q"$config.useDefaults"
-  private[this] val cfgDiscriminator =
+  private[this] val cfgDiscriminator             =
     q"$config.discriminator"
 
   private[this] def codec(clsDef: ClassDef): Tree = {
-    val tpname = clsDef.name
-    val tparams = clsDef.tparams
-    val decoderName = TermName("decode" + tpname.decodedName)
-    val encoderName = TermName("encode" + tpname.decodedName)
-    val codecName = TermName("codecFor" + tpname.decodedName)
-    val transformNames = if (isSealed(clsDef)) cfgTransformConstructorNames else cfgTransformMemberNames
+    val tpname                    = clsDef.name
+    val tparams                   = clsDef.tparams
+    val decoderName               = TermName("decode" + tpname.decodedName)
+    val encoderName               = TermName("encode" + tpname.decodedName)
+    val codecName                 = TermName("codecFor" + tpname.decodedName)
+    val transformNames            = if (isSealed(clsDef)) cfgTransformConstructorNames else cfgTransformMemberNames
     val (decoder, encoder, codec) = if (tparams.isEmpty) {
       val Type = tpname
       (
@@ -160,16 +160,16 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
             _root_.io.circe.derivation.deriveCodec[$Type]($transformNames, $cfgUseDefaults, $cfgDiscriminator)"""
       )
     } else {
-      val tparamNames = tparams.map(_.name)
+      val tparamNames                                              = tparams.map(_.name)
       def mkImplicitParams(prefix: String, typeSymbol: TypeSymbol) =
         tparamNames.zipWithIndex.map { case (tparamName, i) =>
           val paramName = TermName(s"$prefix$i")
           val paramType = tq"$typeSymbol[$tparamName]"
           q"$paramName: $paramType"
         }
-      val decodeParams = mkImplicitParams("decode", DecoderClass)
-      val encodeParams = mkImplicitParams("encode", EncoderClass)
-      val Type = tq"$tpname[..$tparamNames]"
+      val decodeParams                                             = mkImplicitParams("decode", DecoderClass)
+      val encodeParams                                             = mkImplicitParams("encode", EncoderClass)
+      val Type                                                     = tq"$tpname[..$tparamNames]"
       (
         q"""implicit def $decoderName[..$tparams](implicit ..$decodeParams): $DecoderClass[$Type] =
            _root_.io.circe.derivation.deriveDecoder[$Type]($transformNames, $cfgUseDefaults, $cfgDiscriminator)""",
@@ -193,9 +193,9 @@ private[derivation] final class GenericJsonCodecMacros(val c: blackbox.Context) 
 
 private sealed trait JsonCodecType
 private object JsonCodecType {
-  case object Both extends JsonCodecType
-  case object DecodeOnly extends JsonCodecType
-  case object EncodeOnly extends JsonCodecType
+  case object Both               extends JsonCodecType
+  case object DecodeOnly         extends JsonCodecType
+  case object EncodeOnly         extends JsonCodecType
   case object SnakeCaseJsonCodec extends JsonCodecType
   case object KebabCaseJsonCodec extends JsonCodecType
 }

@@ -1,6 +1,6 @@
 package io.circe.examples
 
-import cats.kernel.Eq
+import cats.Eq
 import cats.kernel.instances.all._
 import org.scalacheck.Arbitrary
 
@@ -22,8 +22,8 @@ class MultiParamListClass(val i: Int, val s: String)(val cs: List[Char])
 object MultiParamListClass {
   implicit val arbitraryMultiParamListClass: Arbitrary[MultiParamListClass] = Arbitrary(
     for {
-      i <- Arbitrary.arbitrary[Int]
-      s <- Arbitrary.arbitrary[String]
+      i  <- Arbitrary.arbitrary[Int]
+      s  <- Arbitrary.arbitrary[String]
       cs <- Arbitrary.arbitrary[List[Char]]
     } yield new MultiParamListClass(i, s)(cs)
   )

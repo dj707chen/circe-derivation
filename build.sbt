@@ -41,6 +41,7 @@ def priorTo2_13(scalaVersion: String): Boolean =
   }
 
 val baseSettings = Seq(
+  scalafmtOnCompile := true,
   scalacOptions ++= compilerOptions,
   scalacOptions ++= (
     if (priorTo2_13(scalaVersion.value))
@@ -68,7 +69,7 @@ val allSettings = baseSettings ++ publishSettings
 
 val docMappingsApiDir = settingKey[String]("Subdirectory in site target directory for API docs")
 
-val root = project
+val `circe-derivation-root` = project
   .in(file("."))
   .settings(allSettings)
   .settings(noPublishSettings)

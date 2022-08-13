@@ -1,6 +1,6 @@
 package io.circe.derivation
 
-import cats.kernel.Eq
+import cats.Eq
 import io.circe.{ Codec, Decoder, Encoder }
 import org.scalacheck.Arbitrary
 
@@ -21,14 +21,14 @@ object TransformMemberNamesExample {
 
     implicit val encodeUser: Encoder[User] = deriveEncoder(renaming.snakeCase, None)
     implicit val decodeUser: Decoder[User] = deriveDecoder(renaming.snakeCase, true, None)
-    val codecForUser: Codec[User] = deriveCodec(renaming.snakeCase, true, None)
+    val codecForUser: Codec[User]          = deriveCodec(renaming.snakeCase, true, None)
   }
 
   case class Role(title: String)
 
   object Role {
     implicit val arbitraryRole: Arbitrary[Role] = Arbitrary(Arbitrary.arbitrary[String].map(Role(_)))
-    implicit val eqRole: Eq[Role] = Eq.fromUniversalEquals
+    implicit val eqRole: Eq[Role]               = Eq.fromUniversalEquals
 
     implicit val encodeRole: Encoder[Role] = deriveEncoder(_.toUpperCase, None)
     implicit val decodeRole: Decoder[Role] = deriveDecoder(_.toUpperCase, true, None)

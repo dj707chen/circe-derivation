@@ -7,19 +7,19 @@ import io.circe.syntax._
 import io.circe.testing.CodecTests
 
 object TransformMemberNamesSuiteCodecs extends Serializable {
-  implicit val decodeFoo: Decoder[Foo] = deriveDecoder(renaming.snakeCase, true, None)
+  implicit val decodeFoo: Decoder[Foo]          = deriveDecoder(renaming.snakeCase, true, None)
   implicit val encodeFoo: Encoder.AsObject[Foo] = deriveEncoder(renaming.snakeCase, None)
-  val codecForFoo: Codec.AsObject[Foo] = deriveCodec(renaming.snakeCase, true, None)
+  val codecForFoo: Codec.AsObject[Foo]          = deriveCodec(renaming.snakeCase, true, None)
 
-  implicit val decodeBar: Decoder[Bar] = deriveDecoder(renaming.snakeCase, true, None)
+  implicit val decodeBar: Decoder[Bar]          = deriveDecoder(renaming.snakeCase, true, None)
   implicit val encodeBar: Encoder.AsObject[Bar] = deriveEncoder(renaming.snakeCase, None)
-  val codecForBar: Codec.AsObject[Bar] = deriveCodec(renaming.snakeCase, true, None)
+  val codecForBar: Codec.AsObject[Bar]          = deriveCodec(renaming.snakeCase, true, None)
 
-  implicit val decodeBaz: Decoder[Baz] = deriveDecoder(renaming.snakeCase, true, None)
+  implicit val decodeBaz: Decoder[Baz]          = deriveDecoder(renaming.snakeCase, true, None)
   implicit val encodeBaz: Encoder.AsObject[Baz] = deriveEncoder(renaming.snakeCase, None)
-  val codecForBaz: Codec.AsObject[Baz] = deriveCodec(renaming.snakeCase, true, None)
+  val codecForBaz: Codec.AsObject[Baz]          = deriveCodec(renaming.snakeCase, true, None)
 
-  implicit def decodeQux[A: Decoder]: Decoder[Qux[A]] =
+  implicit def decodeQux[A: Decoder]: Decoder[Qux[A]]          =
     deriveDecoder(renaming.replaceWith("aa" -> "1", "bb" -> "2"), true, None)
   implicit def encodeQux[A: Encoder]: Encoder.AsObject[Qux[A]] =
     deriveEncoder(renaming.replaceWith("aa" -> "1", "bb" -> "2"), None)
@@ -89,12 +89,12 @@ class TransformMemberNamesSuite extends CirceSuite {
   "deriveEncoder" should "properly transform member names" in forAll { (user: User) =>
     val expected = Json.obj(
       "first_name" -> Json.fromString(user.firstName),
-      "last_name" -> Json.fromString(user.lastName),
-      "role" -> Json.obj("TITLE" -> Json.fromString(user.role.title)),
-      "address" -> Json.obj(
-        "#" -> Json.fromInt(user.address.number),
+      "last_name"  -> Json.fromString(user.lastName),
+      "role"       -> Json.obj("TITLE" -> Json.fromString(user.role.title)),
+      "address"    -> Json.obj(
+        "#"      -> Json.fromInt(user.address.number),
         "street" -> Json.fromString(user.address.street),
-        "city" -> Json.fromString(user.address.city)
+        "city"   -> Json.fromString(user.address.city)
       )
     )
 

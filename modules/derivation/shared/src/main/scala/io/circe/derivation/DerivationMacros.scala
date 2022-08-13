@@ -10,14 +10,14 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
 
   private[this] val encoderSymbol: Symbol = c.symbolOf[Encoder.type]
   private[this] val decoderSymbol: Symbol = c.symbolOf[Decoder.type]
-  private[this] val encoderTC: Type = typeOf[Encoder[_]].typeConstructor
-  private[this] val decoderTC: Type = typeOf[Decoder[_]].typeConstructor
-  private[this] val defaultDiscriminator =
+  private[this] val encoderTC: Type       = typeOf[Encoder[_]].typeConstructor
+  private[this] val decoderTC: Type       = typeOf[Decoder[_]].typeConstructor
+  private[this] val defaultDiscriminator  =
     c.Expr[Option[String]](q"_root_.scala.None")
-  private[this] val trueExpression = c.Expr[Boolean](q"true")
+  private[this] val trueExpression        = c.Expr[Boolean](q"true")
 
   private[this] def failWithMessage(message: String): Nothing = c.abort(c.enclosingPosition, message)
-  private[this] def nameOf(s: Symbol): String = s.asClass.name.decodedName.toString.trim
+  private[this] def nameOf(s: Symbol): String                 = s.asClass.name.decodedName.toString.trim
 
   private[this] case class Instance(tc: Type, tpe: Type, name: TermName) {
     def resolve(): Tree = c.inferImplicitValue(appliedType(tc, List(tpe))) match {
@@ -41,8 +41,8 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
       memberPosition: (Symbol, Int)
     ): Member = {
       val (sym, position) = memberPosition
-      val memberName = sym.name
-      val memberDecl = tpe.decl(memberName)
+      val memberName      = sym.name
+      val memberDecl      = tpe.decl(memberName)
 
       val default = {
         val value = memberName.decodedName.toString
@@ -54,16 +54,16 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
           s"No method $memberName in $tpe (this is probably because a constructor parameter isn't a val)"
         )
 
-      //we extract annotation names
+      // we extract annotation names
       var keyName: Option[Tree] = None
-      var noDefault = false
+      var noDefault             = false
 
       sym.annotations.foreach { ann =>
         ann.tree match {
           case Apply(Select(myType2, _), List(value)) =>
             // using string: ugly but fast
             myType2.toString().split('.').last match {
-              case "JsonKey" =>
+              case "JsonKey"       =>
                 var realValue = value.toString
                 realValue = realValue.substring(1, realValue.length - 1)
                 if (realValue.toString.isEmpty)
@@ -74,14 +74,14 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
                 keyName = Some(value)
               case "JsonNoDefault" =>
                 noDefault = true
-              case _ =>
+              case _               =>
               // we skip other annotations
             }
-          case extra =>
+          case extra                                  =>
             extra.toString().split('.').last match {
               case "JsonNoDefault()" =>
                 noDefault = true
-              case _ =>
+              case _                 =>
               // we skip other annotations
             }
         }
@@ -101,7 +101,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
   private[this] sealed abstract class ProductRepr {
     protected[this] def instantiate(params: List[List[Tree]]): Tree
 
-    def instantiate: Tree = instantiate(paramListsWithNames.map(_.map(p => q"${p._2}")))
+    def instantiate: Tree             = instantiate(paramListsWithNames.map(_.map(p => q"${p._2}")))
     def instantiateAccumulating: Tree = instantiate(
       paramListsWithNames.map(
         _.map { case (Member(_, _, tpe, _, _, _), name) =>
@@ -136,7 +136,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
             )
 
             instances :: acc
-          case (acc, _) => acc
+          case (acc, _)                                                                  => acc
         }
         .reverse
 
@@ -152,7 +152,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
     protected[this] def instantiate(params: List[List[Tree]]): Tree = q"new $tpe(...$params)"
   }
   private[this] case class ProductReprWithNone(tpe: Type, termSymbol: TermSymbol, paramLists: List[List[Member]] = Nil)
-      extends ProductRepr {
+      extends ProductRepr                         {
     protected[this] def instantiate(params: List[List[Tree]]): Tree = q"${termSymbol}"
   }
 
@@ -167,12 +167,12 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
   private[this] def membersFromCompanionApply(tpe: Type): Option[ProductRepr] =
     tpe.typeSymbol.companion.typeSignature.member(applyName) match {
       case NoSymbol => None
-      case s =>
+      case s        =>
         val defaults = caseClassFieldsDefaults(tpe)
         s.alternatives.collect { case m: MethodSymbol =>
           m.paramLists
         }.sortBy(-_.map(_.size).sum).headOption.map { applyParams =>
-          //We use zipwithIndex for gathering default field value if available
+          // We use zipwithIndex for gathering default field value if available
           ProductReprWithApply(
             tpe,
             applyParams.map(_.zipWithIndex.map(Member.fromSymbol(tpe, defaults)))
@@ -238,7 +238,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
         tailcall(go(rest ++ sym.asClass.knownDirectSubclasses))
 
       // Everything else is a subclass
-      case sym :: rest =>
+      case sym :: rest                                        =>
         tailcall(go(rest)).map(_ + sym)
 
       case Nil => done(Set())
@@ -364,7 +364,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
 
     val (transformedNameNames: List[TermName], transformedNameDefs: List[Tree]) = subclassList.zipWithIndex.map {
       case (s, i) =>
-        val name = TermName(s"name$i")
+        val name  = TermName(s"name$i")
         val value = transformName(nameOf(s))
         (name, q"private[this] val $name = $value")
     }.unzip
@@ -479,11 +479,11 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
             q"""
             {
               val $resName: _root_.io.circe.Decoder.Result[$memberType] = ${productMemberDecoding(
-              repr,
-              member,
-              useDefaults,
-              transformName
-            )}
+                repr,
+                member,
+                useDefaults,
+                transformName
+              )}
 
               if ($resName.isRight) {
                 val $resultName: $memberType = ${extractFromRight(resName, memberType)}
@@ -657,7 +657,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
 
     val encoderCases = subclasses.map { s =>
       val subTpe = s.asClass.toType
-      val name = transformName(nameOf(s))
+      val name   = transformName(nameOf(s))
 
       cq"""value: $subTpe =>
         val encoded = _root_.io.circe.Encoder.AsObject[$subTpe].encodeObject(value)
@@ -687,7 +687,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
     transformNames: Option[c.Expr[String => String]],
     discriminator: c.Expr[Option[String]]
   ): c.Expr[Encoder.AsObject[T]] = {
-    val tpe = weakTypeOf[T]
+    val tpe        = weakTypeOf[T]
     // we manage to work on ADT lets check the subclasses
     val subclasses = allSubclasses(tpe.typeSymbol.asClass)
     if (subclasses.isEmpty) {
@@ -711,7 +711,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
     } else {
       try {
         tpe.typeSymbol.companion.typeSignature.member(TermName("apply")).asTerm.alternatives.find(_.isSynthetic) match {
-          case None => ListMap()
+          case None           => ListMap()
           case Some(syntatic) =>
             ListMap(
               syntatic.asMethod.paramLists.flatten.zipWithIndex.map { case (field, i) =>
@@ -749,7 +749,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
 
     val (transformedNameNames: List[TermName], transformedNameDefs: List[Tree]) = subclassList.zipWithIndex.map {
       case (s, i) =>
-        val name = TermName(s"name$i")
+        val name  = TermName(s"name$i")
         val value = transformName(nameOf(s))
         (name, q"private[this] val $name = $value")
     }.unzip
@@ -763,7 +763,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
 
     val encoderCases = subclassList.map { s =>
       val subTpe = s.asClass.toType
-      val name = transformName(nameOf(s))
+      val name   = transformName(nameOf(s))
 
       cq"""value: $subTpe =>
         val encoded = _root_.io.circe.Encoder.AsObject[$subTpe].encodeObject(value)
@@ -846,7 +846,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
           }
         }
         """
-      case None => q"${repr.decoder(member.tpe).name}.tryDecode(c.downField($realFieldName))"
+      case None               => q"${repr.decoder(member.tpe).name}.tryDecode(c.downField($realFieldName))"
     }
   }
 
@@ -873,7 +873,7 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
           }
         }
         """
-      case None => q"${repr.decoder(member.tpe).name}.tryDecodeAccumulating(c.downField($realFieldName))"
+      case None               => q"${repr.decoder(member.tpe).name}.tryDecodeAccumulating(c.downField($realFieldName))"
     }
   }
 
@@ -982,11 +982,11 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
             q"""
             {
               val $resName: _root_.io.circe.Decoder.Result[$memberType] = ${productMemberDecoding(
-              repr,
-              member,
-              useDefaults,
-              transformName
-            )}
+                repr,
+                member,
+                useDefaults,
+                transformName
+              )}
 
               if ($resName.isRight) {
                 val $resultName: $memberType = ${extractFromRight(resName, memberType)}
@@ -1061,14 +1061,12 @@ class DerivationMacros(val c: blackbox.Context) extends ScalaVersionCompat {
 
 object DerivationMacros {
 
-  /**
-   * Not intended for public use.
-   */
+  /** Not intended for public use.
+    */
   def isKeyMissingNone[A](value: Decoder.Result[A]): Boolean = value.eq(Decoder.keyMissingNone)
 
-  /**
-   * Not intended for public use.
-   */
+  /** Not intended for public use.
+    */
   def isKeyMissingNoneAccumulating[A](value: Decoder.AccumulatingResult[A]): Boolean =
     value.eq(Decoder.keyMissingNoneAccumulating)
 }

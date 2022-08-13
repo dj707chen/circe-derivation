@@ -13,35 +13,35 @@ object JsonCodecADTSpecSamples {
 
   @JsonCodec case class ADT1A(a: Int) extends ADT1
   @JsonCodec case class ADT1B(b: Int) extends ADT1
-  @JsonCodec case object ADT1C extends ADT1
+  @JsonCodec case object ADT1C        extends ADT1
 
   @JsonCodec(Configuration.default.withDiscriminator("_type"))
   sealed trait ADT1Custom
 
   @JsonCodec case class ADT1CustomA(a: Int) extends ADT1Custom
   @JsonCodec case class ADT1CustomB(b: Int) extends ADT1Custom
-  @JsonCodec case object ADT1CustomC extends ADT1Custom
+  @JsonCodec case object ADT1CustomC        extends ADT1Custom
 
   @JsonCodec(Configuration.default)
   sealed trait ADTTyped
 
   @JsonCodec case class ADTTypedA(a: Int) extends ADTTyped
   @JsonCodec case class ADTTypedB(b: Int) extends ADTTyped
-  @JsonCodec case object ADTTypedC extends ADTTyped
+  @JsonCodec case object ADTTypedC        extends ADTTyped
 
   @JsonCodec(Configuration.default.withKebabCaseConstructorNames)
   sealed trait ADTTransformed
 
   @JsonCodec case class ADTTransformed1(a: Int) extends ADTTransformed
   @JsonCodec case class ADTTransformed2(b: Int) extends ADTTransformed
-  @JsonCodec case object ADTTransformed3 extends ADTTransformed
+  @JsonCodec case object ADTTransformed3        extends ADTTransformed
 
   @JsonCodec(Configuration.default.withSnakeCaseConstructorNames.withDiscriminator("_type"))
   sealed trait ADTSnakeDiscriminator
 
   @JsonCodec case class ADTSnakeDiscriminatorA(a: Int) extends ADTSnakeDiscriminator
   @JsonCodec case class ADTSnakeDiscriminatorB(b: Int) extends ADTSnakeDiscriminator
-  @JsonCodec case object ADTSnakeDiscriminatorC extends ADTSnakeDiscriminator
+  @JsonCodec case object ADTSnakeDiscriminatorC        extends ADTSnakeDiscriminator
 }
 
 class JsonCodecADTSpec extends AnyWordSpec with Matchers {

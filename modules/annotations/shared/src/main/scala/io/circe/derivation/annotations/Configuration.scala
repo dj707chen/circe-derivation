@@ -2,27 +2,20 @@ package io.circe.derivation.annotations
 
 import io.circe.derivation.renaming
 
-/**
- * Configuration allowing customisation of the JSON produced when encoding, or
- * expected when decoding. Can be passed to the [[JsonCodec]] annotation to
- * allow customisation of derivation.
- *
- * The configuration also determines if either *both* encoder and decoder are
- * derived - or if only one of them will be.
- */
+/** Configuration allowing customisation of the JSON produced when encoding, or expected when decoding. Can be passed to
+  * the [[JsonCodec]] annotation to allow customisation of derivation.
+  *
+  * The configuration also determines if either *both* encoder and decoder are derived - or if only one of them will be.
+  */
 sealed trait Configuration {
   type Config <: Configuration
 
-  /**
-   * Transforms the names of type members in the JSON, allowing, for example,
-   *  formatting or case changes
-   */
+  /** Transforms the names of type members in the JSON, allowing, for example, formatting or case changes
+    */
   def transformMemberNames: String => String
 
-  /**
-   * Transforms the value of any constructor names in the JSON, allowing,
-   *  for example, formatting or case changes
-   */
+  /** Transforms the value of any constructor names in the JSON, allowing, for example, formatting or case changes
+    */
   def transformConstructorNames: String => String
 
   def useDefaults: Boolean
@@ -57,12 +50,10 @@ sealed trait Configuration {
 
 object Configuration {
 
-  /**
-   * Configuration allowing customisation of JSON produced when encoding or
-   *  decoding.
-   *
-   *  This configuration creates *both* encoder and decoder.
-   */
+  /** Configuration allowing customisation of JSON produced when encoding or decoding.
+    *
+    * This configuration creates *both* encoder and decoder.
+    */
   final case class Codec(
     transformMemberNames: String => String,
     transformConstructorNames: String => String,
@@ -84,12 +75,10 @@ object Configuration {
       Codec(transformMemberNames, transformConstructorNames, useDefaults, discriminator)
   }
 
-  /**
-   * Configuration allowing customisation of JSON produced when encoding or
-   *  decoding.
-   *
-   *  This configuration **only** creates decoder.
-   */
+  /** Configuration allowing customisation of JSON produced when encoding or decoding.
+    *
+    * This configuration **only** creates decoder.
+    */
   final case class DecodeOnly(
     transformMemberNames: String => String,
     transformConstructorNames: String => String,
@@ -109,12 +98,10 @@ object Configuration {
       DecodeOnly(transformMemberNames, transformConstructorNames, useDefaults, discriminator)
   }
 
-  /**
-   * Configuration allowing customisation of JSON produced when encoding or
-   *  decoding.
-   *
-   *  This configuration **only** creates encoder.
-   */
+  /** Configuration allowing customisation of JSON produced when encoding or decoding.
+    *
+    * This configuration **only** creates encoder.
+    */
   final case class EncodeOnly(
     transformMemberNames: String => String,
     transformConstructorNames: String => String,

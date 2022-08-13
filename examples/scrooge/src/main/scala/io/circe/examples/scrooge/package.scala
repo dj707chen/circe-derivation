@@ -1,6 +1,6 @@
 package io.circe.examples
 
-import cats.kernel.Eq
+import cats.Eq
 import org.scalacheck.Arbitrary
 
 package object scrooge {
@@ -11,7 +11,7 @@ package object scrooge {
       c <- Arbitrary.arbitrary[List[String]]
     } yield SomethingStruct(a, b, c)
   )
-  implicit val eqSomethingStruct: Eq[SomethingStruct] = Eq.fromUniversalEquals
+  implicit val eqSomethingStruct: Eq[SomethingStruct]               = Eq.fromUniversalEquals
 
   implicit val arbitraryBiggerStruct: Arbitrary[BiggerStruct] = Arbitrary(
     for {
@@ -19,5 +19,5 @@ package object scrooge {
       e <- Arbitrary.arbitrary[Option[String]]
     } yield BiggerStruct(d, e)
   )
-  implicit val eqBiggerStruct: Eq[BiggerStruct] = Eq.fromUniversalEquals
+  implicit val eqBiggerStruct: Eq[BiggerStruct]               = Eq.fromUniversalEquals
 }

@@ -11,99 +11,99 @@ object DerivationSuiteCodecs extends Serializable {
   private[this] trait scala; private[this] trait Any; private[this] trait String; private[this] trait Unit;
   private[this] trait List; private[this] trait Option
 
-  implicit val decodeFoo: Decoder[Foo] = deriveDecoder
+  implicit val decodeFoo: Decoder[Foo]          = deriveDecoder
   implicit val encodeFoo: Encoder.AsObject[Foo] = deriveEncoder
-  val codecForFoo: Codec.AsObject[Foo] = deriveCodec
+  val codecForFoo: Codec.AsObject[Foo]          = deriveCodec
 
-  implicit val decodeBar: Decoder[Bar] = deriveDecoder
+  implicit val decodeBar: Decoder[Bar]          = deriveDecoder
   implicit val encodeBar: Encoder.AsObject[Bar] = deriveEncoder
-  val codecForBar: Codec.AsObject[Bar] = deriveCodec
+  val codecForBar: Codec.AsObject[Bar]          = deriveCodec
 
-  implicit val decodeBaz: Decoder[Baz] = deriveDecoder
+  implicit val decodeBaz: Decoder[Baz]          = deriveDecoder
   implicit val encodeBaz: Encoder.AsObject[Baz] = deriveEncoder
-  val codecForBaz: Codec.AsObject[Baz] = deriveCodec
+  val codecForBaz: Codec.AsObject[Baz]          = deriveCodec
 
-  implicit def decodeQux[A: Decoder]: Decoder[Qux[A]] = deriveDecoder
+  implicit def decodeQux[A: Decoder]: Decoder[Qux[A]]          = deriveDecoder
   implicit def encodeQux[A: Encoder]: Encoder.AsObject[Qux[A]] = deriveEncoder
   def codecForQux[A: Encoder: Decoder]: Codec.AsObject[Qux[A]] = deriveCodec
 
   implicit val decodeMultiParamListClass: Decoder[MultiParamListClass] = deriveDecoder
   implicit val encodeMultiParamListClass: Encoder[MultiParamListClass] = deriveEncoder
-  val codecForMultiParamListClass: Codec[MultiParamListClass] = deriveCodec
+  val codecForMultiParamListClass: Codec[MultiParamListClass]          = deriveCodec
 
   implicit val decodeSimpleClass: Decoder[SimpleClass] = deriveDecoder
   implicit val encodeSimpleClass: Encoder[SimpleClass] = deriveEncoder
-  val codecForSimpleClass: Codec[SimpleClass] = deriveCodec
+  val codecForSimpleClass: Codec[SimpleClass]          = deriveCodec
 
   implicit val decodeCustomApplyParamNamesClass: Decoder[CustomApplyParamNamesClass] = deriveDecoder
   implicit val encodeCustomApplyParamNamesClass: Encoder[CustomApplyParamNamesClass] = deriveEncoder
-  val codecForCustomApplyParamNamesClass: Codec[CustomApplyParamNamesClass] = deriveCodec
+  val codecForCustomApplyParamNamesClass: Codec[CustomApplyParamNamesClass]          = deriveCodec
 
   implicit val decodeCustomApplyParamTypesClass: Decoder[CustomApplyParamTypesClass] = deriveDecoder
   implicit val encodeCustomApplyParamTypesClass: Encoder[CustomApplyParamTypesClass] = deriveEncoder
-  val codecForCustomApplyParamTypesClass: Codec[CustomApplyParamTypesClass] = deriveCodec
+  val codecForCustomApplyParamTypesClass: Codec[CustomApplyParamTypesClass]          = deriveCodec
 
   implicit val decodeWithDefaults: Decoder[WithDefaults] = deriveDecoder(identity, true, None)
   implicit val encodeWithDefaults: Encoder[WithDefaults] = deriveEncoder(identity, None)
-  val codecForWithDefaults: Codec[WithDefaults] = deriveCodec(identity, true, None)
+  val codecForWithDefaults: Codec[WithDefaults]          = deriveCodec(identity, true, None)
 
   implicit val decodeWithJson: Decoder[WithJson] = deriveDecoder(identity, true, None)
   implicit val encodeWithJson: Encoder[WithJson] = deriveEncoder(identity, None)
-  val codecForWithJson: Codec[WithJson] = deriveCodec(identity, true, None)
+  val codecForWithJson: Codec[WithJson]          = deriveCodec(identity, true, None)
 
-  implicit val decodeAdtFoo: Decoder[AdtFoo] = deriveDecoder
+  implicit val decodeAdtFoo: Decoder[AdtFoo]          = deriveDecoder
   implicit val encodeAdtFoo: Encoder.AsObject[AdtFoo] = deriveEncoder
 
-  implicit val decodeAdtBar: Decoder[AdtBar] = deriveDecoder
+  implicit val decodeAdtBar: Decoder[AdtBar]          = deriveDecoder
   implicit val encodeAdtBar: Encoder.AsObject[AdtBar] = deriveEncoder
 
-  implicit val decodeAdtQux: Decoder[AdtQux.type] = deriveDecoder
+  implicit val decodeAdtQux: Decoder[AdtQux.type]          = deriveDecoder
   implicit val encodeAdtQux: Encoder.AsObject[AdtQux.type] = deriveEncoder
 
-  implicit val decodeAdt: Decoder[Adt] = deriveDecoder
+  implicit val decodeAdt: Decoder[Adt]          = deriveDecoder
   implicit val encodeAdt: Encoder.AsObject[Adt] = deriveEncoder
-  val codecForAdt: Codec[Adt] = deriveCodec
+  val codecForAdt: Codec[Adt]                   = deriveCodec
 
-  implicit val decodeNestedAdtFoo: Decoder[NestedAdtFoo] = deriveDecoder
+  implicit val decodeNestedAdtFoo: Decoder[NestedAdtFoo]          = deriveDecoder
   implicit val encodeNestedAdtFoo: Encoder.AsObject[NestedAdtFoo] = deriveEncoder
 
-  implicit val decodeNestedAdtBar: Decoder[NestedAdtBar] = deriveDecoder
+  implicit val decodeNestedAdtBar: Decoder[NestedAdtBar]          = deriveDecoder
   implicit val encodeNestedAdtBar: Encoder.AsObject[NestedAdtBar] = deriveEncoder
 
-  implicit val decodeNestedAdtQux: Decoder[NestedAdtQux.type] = deriveDecoder
+  implicit val decodeNestedAdtQux: Decoder[NestedAdtQux.type]          = deriveDecoder
   implicit val encodeNestedAdtQux: Encoder.AsObject[NestedAdtQux.type] = deriveEncoder
 
-  implicit val decodeNestedAdt: Decoder[NestedAdt] = deriveDecoder
+  implicit val decodeNestedAdt: Decoder[NestedAdt]          = deriveDecoder
   implicit val encodeNestedAdt: Encoder.AsObject[NestedAdt] = deriveEncoder
-  val codecForNestedAdt: Codec[NestedAdt] = deriveCodec
+  val codecForNestedAdt: Codec[NestedAdt]                   = deriveCodec
 
   object discriminator {
-    val typeField = Some("_type")
-    implicit val decodeAdtFoo: Decoder[AdtFoo] = deriveDecoder(identity, false, typeField)
+    val typeField                                       = Some("_type")
+    implicit val decodeAdtFoo: Decoder[AdtFoo]          = deriveDecoder(identity, false, typeField)
     implicit val encodeAdtFoo: Encoder.AsObject[AdtFoo] = deriveEncoder(identity, typeField)
 
-    implicit val decodeAdtBar: Decoder[AdtBar] = deriveDecoder(identity, false, typeField)
+    implicit val decodeAdtBar: Decoder[AdtBar]          = deriveDecoder(identity, false, typeField)
     implicit val encodeAdtBar: Encoder.AsObject[AdtBar] = deriveEncoder(identity, typeField)
 
-    implicit val decodeAdtQux: Decoder[AdtQux.type] = deriveDecoder(identity, false, typeField)
+    implicit val decodeAdtQux: Decoder[AdtQux.type]          = deriveDecoder(identity, false, typeField)
     implicit val encodeAdtQux: Encoder.AsObject[AdtQux.type] = deriveEncoder(identity, typeField)
 
-    implicit val decodeAdt: Decoder[Adt] = deriveDecoder(identity, false, typeField)
+    implicit val decodeAdt: Decoder[Adt]          = deriveDecoder(identity, false, typeField)
     implicit val encodeAdt: Encoder.AsObject[Adt] = deriveEncoder(identity, typeField)
-    val codecForAdt: Codec[Adt] = deriveCodec(identity, false, typeField)
+    val codecForAdt: Codec[Adt]                   = deriveCodec(identity, false, typeField)
 
-    implicit val decodeNestedAdtFoo: Decoder[NestedAdtFoo] = deriveDecoder(identity, false, typeField)
+    implicit val decodeNestedAdtFoo: Decoder[NestedAdtFoo]          = deriveDecoder(identity, false, typeField)
     implicit val encodeNestedAdtFoo: Encoder.AsObject[NestedAdtFoo] = deriveEncoder(identity, typeField)
 
-    implicit val decodeNestedAdtBar: Decoder[NestedAdtBar] = deriveDecoder(identity, false, typeField)
+    implicit val decodeNestedAdtBar: Decoder[NestedAdtBar]          = deriveDecoder(identity, false, typeField)
     implicit val encodeNestedAdtBar: Encoder.AsObject[NestedAdtBar] = deriveEncoder(identity, typeField)
 
-    implicit val decodeNestedAdtQux: Decoder[NestedAdtQux.type] = deriveDecoder(identity, false, typeField)
+    implicit val decodeNestedAdtQux: Decoder[NestedAdtQux.type]          = deriveDecoder(identity, false, typeField)
     implicit val encodeNestedAdtQux: Encoder.AsObject[NestedAdtQux.type] = deriveEncoder(identity, typeField)
 
-    implicit val decodeNestedAdt: Decoder[NestedAdt] = deriveDecoder(identity, false, typeField)
+    implicit val decodeNestedAdt: Decoder[NestedAdt]          = deriveDecoder(identity, false, typeField)
     implicit val encodeNestedAdt: Encoder.AsObject[NestedAdt] = deriveEncoder(identity, typeField)
-    val codecForNestedAdt: Codec[NestedAdt] = deriveCodec(identity, false, typeField)
+    val codecForNestedAdt: Codec[NestedAdt]                   = deriveCodec(identity, false, typeField)
   }
 }
 
@@ -392,7 +392,7 @@ class DerivationSuite extends CirceSuite {
 
   "useDefaults" should "cause defaults to be used for missing fields" in {
     val expectedBothDefaults = WithDefaults(0, 1, List(""))
-    val expectedOneDefault = WithDefaults(0, 1, Nil)
+    val expectedOneDefault   = WithDefaults(0, 1, Nil)
 
     val j1 = Json.obj("i" := 0)
     val j2 = Json.obj("i" := 0, "k" := List.empty[String])
@@ -414,7 +414,7 @@ class DerivationSuite extends CirceSuite {
   }
 
   "Derived ADT decoders" should "preserve error accumulation" in {
-    val j = Json.obj("AdtFoo" := Json.obj("s" := Json.fromInt(0))).hcursor
+    val j         = Json.obj("AdtFoo" := Json.obj("s" := Json.fromInt(0))).hcursor
     val histories = NonEmptyList.of[List[CursorOp]](
       List(CursorOp.DownField("i"), CursorOp.DownField("AdtFoo")),
       List(CursorOp.DownField("s"), CursorOp.DownField("AdtFoo"))
@@ -423,7 +423,7 @@ class DerivationSuite extends CirceSuite {
   }
 
   "Derived ADT codecs" should "preserve error accumulation" in {
-    val j = Json.obj("AdtFoo" := Json.obj("s" := Json.fromInt(0))).hcursor
+    val j         = Json.obj("AdtFoo" := Json.obj("s" := Json.fromInt(0))).hcursor
     val histories = NonEmptyList.of[List[CursorOp]](
       List(CursorOp.DownField("i"), CursorOp.DownField("AdtFoo")),
       List(CursorOp.DownField("s"), CursorOp.DownField("AdtFoo"))
@@ -432,7 +432,7 @@ class DerivationSuite extends CirceSuite {
   }
 
   "Derived nested ADT decoders" should "preserve error accumulation" in {
-    val j = Json.obj("NestedAdtFoo" := Json.obj("s" := Json.fromInt(0))).hcursor
+    val j         = Json.obj("NestedAdtFoo" := Json.obj("s" := Json.fromInt(0))).hcursor
     val histories = NonEmptyList.of[List[CursorOp]](
       List(CursorOp.DownField("i"), CursorOp.DownField("NestedAdtFoo")),
       List(CursorOp.DownField("s"), CursorOp.DownField("NestedAdtFoo"))
@@ -441,7 +441,7 @@ class DerivationSuite extends CirceSuite {
   }
 
   "Derived nested ADT codecs" should "preserve error accumulation" in {
-    val j = Json.obj("NestedAdtFoo" := Json.obj("s" := Json.fromInt(0))).hcursor
+    val j         = Json.obj("NestedAdtFoo" := Json.obj("s" := Json.fromInt(0))).hcursor
     val histories = NonEmptyList.of[List[CursorOp]](
       List(CursorOp.DownField("i"), CursorOp.DownField("NestedAdtFoo")),
       List(CursorOp.DownField("s"), CursorOp.DownField("NestedAdtFoo"))
