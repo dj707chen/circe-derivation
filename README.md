@@ -1,5 +1,10 @@
 # circe-derivation
 
+## My notes
+[TestValueGeneration.scala](https://github.com/dj707chen/circe-derivation/blob/master/examples/src/main/scala/io/circe/examples/TestValueGeneration.scala)
+and other types in the same package are good examples
+
+## Summary
 [![Build status](https://img.shields.io/github/workflow/status/circe/circe-derivation/Continuous%20Integration.svg)](https://github.com/circe/circe-derivation/actions)
 [![Coverage status](https://img.shields.io/codecov/c/github/circe/circe-derivation/master.svg)](https://codecov.io/github/circe/circe-derivation)
 [![Gitter](https://img.shields.io/badge/gitter-join%20chat-green.svg)](https://gitter.im/circe/circe)
